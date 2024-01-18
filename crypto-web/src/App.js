@@ -1,8 +1,9 @@
-import logo from "./logo.svg";
-import "./App.css";
+// App.js
+import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useEffect, useState } from "react";
-import Coin from "./Coin";
+import "bootstrap/dist/css/bootstrap.min.css"; // Importa los estilos de Bootstrap
+import CryptoTable from "./CryptoTable";
+import Footer from "./Footer";
 
 function App() {
   const [coins, setCoins] = useState([]);
@@ -13,18 +14,30 @@ function App() {
 
     const fetchData = async () => {
       try {
-        const response = await axios.get(
-          `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false&locale=en&apiKey=${apiKey}`
-        );
+        const cachedCoins = localStorage.getItem("cryptoCoins");
 
-        setCoins(response.data);
+        if (cachedCoins) {
+          setCoins(JSON.parse(cachedCoins));
+        } else {
+          const response = await axios.get(
+            `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=10&page=1&sparkline=false&locale=en&apiKey=${apiKey}`
+          );
+
+          const coinsWithPrice = response.data.map((coin) => ({
+            ...coin,
+            price: coin.current_price || 0,
+          }));
+
+          localStorage.setItem("cryptoCoins", JSON.stringify(coinsWithPrice));
+          setCoins(coinsWithPrice);
+        }
       } catch (error) {
         console.error("Error al realizar la solicitud:", error);
       }
     };
 
     fetchData();
-  }, []); // Dejamos la dependencia vacía para que solo se ejecute al montar el componente
+  }, []);
 
   const handleChange = (e) => {
     setSearch(e.target.value);
@@ -35,28 +48,23 @@ function App() {
   );
 
   return (
-    <div className="crypto-app">
-      <div>
-        <h1>Search a currencyyy</h1>
-        <form>
-          <input
-            type="text"
-            placeholder="search"
-            onChange={handleChange}
-          ></input>
-        </form>
+    <div className="crypto-app " style={{  background: ' linear-gradient(135deg, #232944, #326A0C)',minHeight: '100vh' }}>
+      <div className="row justify-content-center">
+        <div className="col-md-8">
+          <h1 className="my-4" style={{ color: 'white' }}>CoinBase</h1>
+          <form>
+            <input
+              type="text"
+              className="form-control mb-3"
+              placeholder="Search"
+              onChange={handleChange}
+            />
+          </form>
+
+          <CryptoTable filteredCoins={filteredCoins} />
+        </div>
       </div>
-      {filteredCoins.map((coin) => (
-        <Coin
-          key={coin.id}
-          name={coin.name}
-          image={coin.image}
-          symbol={coin.symbol}
-          volume={coin.market_cap}
-          price={coin.current_price}
-          priceChange={coin.price_change_percentage_24h}
-        />
-      ))}
+      <Footer />
     </div>
   );
 }

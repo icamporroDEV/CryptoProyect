@@ -1,5 +1,15 @@
 .App {
   text-align: center;
+
+
+}
+html, body {
+  height: 100%;
+  margin: 0; /* Elimina el margen predeterminado */
+}
+
+body {
+  background: red; /* Cambia este color según tus preferencias */
 }
 
 .App-logo {
