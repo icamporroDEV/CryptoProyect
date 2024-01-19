@@ -1,0 +1,49 @@
+/* NavBar.css */
+
+.navbar-vertical {
+  width: 60px; /* Ajusta el ancho según sea necesario */
+  transition: width 0.3s ease-in-out;
+  display: flex;
+  align-items: flex-start;
+  padding-top: 40px;
+  height: 100vh;
+}
+
+.navbar-toggler {
+  border: none;
+  outline: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.navbar-collapse {
+  overflow: hidden;
+
+  width: 0;
+  transition: width 0.3s ease-in-out;
+}
+
+.navbar-vertical:hover {
+  width: 200px; /* Ajusta el ancho de expansión según sea necesario */
+}
+
+.navbar-vertical:hover .navbar-collapse {
+  width: 200px; /* Ajusta el ancho de expansión según sea necesario */
+}
+.icon-with-text {
+  display: flex;
+  align-items: center;
+}
+
+.hover-text {
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+  padding-left: 10px;
+}
+
+.navbar-vertical:hover .hover-text {
+  opacity: 1;
+}
+.nav-item{
+  margin-bottom:15px;
+}

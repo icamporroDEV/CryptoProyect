@@ -9,12 +9,29 @@ html, body {
 }
 
 body {
-  background: red; /* Cambia este color según tus preferencias */
+  background: #363a3f; /* Cambia este color según tus preferencias */
 }
 
 .App-logo {
   height: 40vmin;
   pointer-events: none;
+}
+/* App.css */
+
+.app-container {
+  display: flex;
+  height: 100vh;
+}
+
+.content-container {
+  flex-grow: 1;
+  overflow-y: auto;
+  transition: margin-left 0.3s;
+  height: 100vh;
+}
+
+.nav-expanded .content-container {
+  margin-left: 250px; /* Ajusta según el ancho de tu NavBar */
 }
 
 @media (prefers-reduced-motion: no-preference) {
